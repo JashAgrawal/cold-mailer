@@ -7,6 +7,7 @@ import { useEmailTemplateStore } from "@/store/template";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createReceiver } from "@/db/recivers";
 import { toast } from "sonner";
+import { updateTemplate } from "@/db/templates";
 
 
 const NewReciverForm = ({templateId}: {templateId: string}) => {
@@ -27,6 +28,7 @@ const NewReciverForm = ({templateId}: {templateId: string}) => {
     mutationFn: async ({email, templateId, variables}: {email: string, templateId: string, variables: Record<string, string>}) => {
       const variablesJson = JSON.stringify(variables);
       await createReceiver({email, templateId, variables: variablesJson,status:"pending"});
+      await updateTemplate(templateId, {membersCount: (selectedTemplate?.membersCount || 0) + 1});
     },
     onMutate: async ({email, variables,templateId}) => {
       await queryClient.cancelQueries({

@@ -143,7 +143,8 @@ const NewTable = ({
                   selectedIds.includes(reciver.id)
                 ),
                 selectedTemplate?.content || "",
-                selectedTemplate?.subject || ""
+                selectedTemplate?.subject || "",
+                templateId
               );
             }}
           >
