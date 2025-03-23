@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEmailTemplateStore } from "@/store/template";
@@ -27,6 +27,8 @@ import {
 } from "../ui/table";
 import { Checkbox } from "../ui/checkbox";
 import { Badge } from "../ui/badge";
+import { useSenderStore } from "@/store/sender";
+import SelectSender from "../sender/selectSender";
 
 const NewTable = ({
   reciverData,
@@ -40,7 +42,7 @@ const NewTable = ({
   const [sortBy, setSortBy] = React.useState<string | null>(null);
   const [allColumns, setAllColumns] = React.useState<string[]>([]);
   const [visibleColumns, setVisibleColumns] = React.useState<string[]>([]);
-
+  const { selectedSender } = useSenderStore();
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
 
   const queryClient = useQueryClient();
@@ -100,6 +102,7 @@ const NewTable = ({
           className="max-w-sm"
         />
         <div className="w-full flex justify-end gap-4">
+          <SelectSender />
           <Button
             variant="destructive"
             onClick={() => {
@@ -144,28 +147,34 @@ const NewTable = ({
           <Button
             disabled={isSending}
             onClick={async () => {
-              try{
+              try {
                 setIsSending(true);
+                if (!selectedSender) {
+                  toast.error("Please select a sender");
+                  setIsSending(false);
+                  return;
+                }
                 await sendMails(
                   reciverData.filter((reciver) =>
                     selectedIds.includes(reciver.id)
-                ),
-                selectedTemplate?.content || "",
-                selectedTemplate?.subject || "",
-                templateId
-              );
-              setIsSending(false);
-              queryClient.invalidateQueries({
-                queryKey: ["receivers", templateId],
-              });
-              toast.success("Mails sent successfully");
-            } catch (error) {
-              setIsSending(false);
-              toast.error("Failed to send mails");
-            }
+                  ),
+                  selectedTemplate?.content || "",
+                  selectedTemplate?.subject || "",
+                  templateId,
+                  selectedSender
+                );
+                setIsSending(false);
+                queryClient.invalidateQueries({
+                  queryKey: ["receivers", templateId],
+                });
+                toast.success("Mails sent successfully");
+              } catch (error) {
+                setIsSending(false);
+                toast.error("Failed to send mails");
+              }
             }}
           >
-           {isSending ? "Sending..." : "Send Mails"}
+            {isSending ? "Sending..." : "Send Mails"}
           </Button>
         </div>
       </div>
@@ -179,12 +188,14 @@ const NewTable = ({
                     selectedIds.includes(reciver.id)
                   )}
                   onCheckedChange={() => {
-                    if (reciverData.every((reciver) =>
-                      selectedIds.includes(reciver.id)
-                    )) {
+                    if (
+                      reciverData.every((reciver) =>
+                        selectedIds.includes(reciver.id)
+                      )
+                    ) {
                       setSelectedIds([]);
                     } else {
-                      setSelectedIds(reciverData.map((reciver) => reciver.id))
+                      setSelectedIds(reciverData.map((reciver) => reciver.id));
                     }
                   }}
                 />
@@ -206,41 +217,59 @@ const NewTable = ({
                 </TableCell>
               </TableRow>
             )}
-            {reciverData.filter((reciver) =>
-              reciver.email.toLowerCase().includes(search.toLowerCase())
-            ).map((reciver) => {
-              const variables = JSON.parse(reciver.variables);
-              return (
-                <TableRow key={reciver.id}>
-                  <TableCell>
-                    <Checkbox
-                      checked={selectedIds.includes(reciver.id)}
-                      onCheckedChange={(value: any) =>
-                        setSelectedIds((prev) =>
-                          value
-                            ? [...prev, reciver.id]
-                            : prev.filter((id) => id !== reciver.id)
-                        )
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div>
-                      {reciver.status === "pending" && <Badge variant="secondary" className="capitalize">{reciver.status}</Badge>}
-                      {reciver.status === "sent" && <Badge variant="default" className="capitalize">{reciver.status}</Badge>}
-                      {reciver.status === "failed" && <Badge variant="destructive" className="capitalize">{reciver.status}</Badge>}
-                      {reciver.status === "opened" && <Badge variant="default" className="capitalize">{reciver.status}</Badge>}
-                    </div>
-                  </TableCell>
-                  <TableCell>{reciver.email}</TableCell>
-                  {visibleColumns.map((column) => (
-                    <TableCell key={column}>{variables[column]}</TableCell>
-                  ))}
-                  {/* <TableCell>{reciver.openedAt ? moment(reciver.openedAt).calendar() : "-"}</TableCell> */}
-                  <TableCell>{reciver.openedCount}</TableCell>
-                </TableRow>
-              );
-            })}
+            {reciverData
+              .filter((reciver) =>
+                reciver.email.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((reciver) => {
+                const variables = JSON.parse(reciver.variables);
+                return (
+                  <TableRow key={reciver.id}>
+                    <TableCell>
+                      <Checkbox
+                        checked={selectedIds.includes(reciver.id)}
+                        onCheckedChange={(value: any) =>
+                          setSelectedIds((prev) =>
+                            value
+                              ? [...prev, reciver.id]
+                              : prev.filter((id) => id !== reciver.id)
+                          )
+                        }
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <div>
+                        {reciver.status === "pending" && (
+                          <Badge variant="secondary" className="capitalize">
+                            {reciver.status}
+                          </Badge>
+                        )}
+                        {reciver.status === "sent" && (
+                          <Badge variant="default" className="capitalize">
+                            {reciver.status}
+                          </Badge>
+                        )}
+                        {reciver.status === "failed" && (
+                          <Badge variant="destructive" className="capitalize">
+                            {reciver.status}
+                          </Badge>
+                        )}
+                        {reciver.status === "opened" && (
+                          <Badge variant="default" className="capitalize">
+                            {reciver.status}
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>{reciver.email}</TableCell>
+                    {visibleColumns.map((column) => (
+                      <TableCell key={column}>{variables[column]}</TableCell>
+                    ))}
+                    {/* <TableCell>{reciver.openedAt ? moment(reciver.openedAt).calendar() : "-"}</TableCell> */}
+                    <TableCell>{reciver.openedCount}</TableCell>
+                  </TableRow>
+                );
+              })}
           </TableBody>
         </Table>
       </div>

@@ -14,7 +14,7 @@ import moment from "moment";
 const TemplateCard = ({ template }: { template: IEmailTemplate }) => {
   return (
     <Link href={`/templates/${template.id}`}>
-      <Card className="w-full max-w-lg">
+      <Card className="w-full h-full max-w-lg">
       <CardHeader>
         <CardTitle>{template.name}</CardTitle>
         <p className="text-sm text-gray-500">{template.subject}</p>
@@ -22,11 +22,11 @@ const TemplateCard = ({ template }: { template: IEmailTemplate }) => {
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-6">
           <p className="text-sm text-gray-500">Variables :- </p>
-          {template.variable.slice(0, 3).map((variable, index) => (
+          {template.variable.slice(0, 2).map((variable, index) => (
             <Badge key={index}>{variable}</Badge>
           ))}
-          {template.variable.length > 3 && (
-            <Badge key="...">...</Badge>
+          {template.variable.length > 2 && (
+            <Badge key="...">... + {template.variable.length - 2} more</Badge>
           )}
         </div>
 

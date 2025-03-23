@@ -42,7 +42,7 @@ export const getEmailContent = (content: string,variables: string) => {
     const variablesObj: Record<string, string> = JSON.parse(variables);
 
    Object.entries(variablesObj).forEach(([key, value]) => {
-    emailContent = emailContent.replace(`[${key}]`, value);
+    emailContent = emailContent.replaceAll(`[${key}]`, value);
    });
    
    return `<p>${emailContent}</p>`; 
