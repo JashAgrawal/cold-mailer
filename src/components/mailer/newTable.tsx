@@ -35,7 +35,7 @@ const NewTable = ({
   templateId: string;
 }) => {
   const [search, setSearch] = React.useState("");
-
+  const [isSending, setIsSending] = React.useState(false);
   const [sortBy, setSortBy] = React.useState<string | null>(null);
   const [allColumns, setAllColumns] = React.useState<string[]>([]);
   const [visibleColumns, setVisibleColumns] = React.useState<string[]>([]);
@@ -138,18 +138,27 @@ const NewTable = ({
           </DropdownMenu>
 
           <Button
-            onClick={() => {
-              sendMails(
-                reciverData.filter((reciver) =>
-                  selectedIds.includes(reciver.id)
+            disabled={isSending}
+            onClick={async () => {
+              try{
+                setIsSending(true);
+                await sendMails(
+                  reciverData.filter((reciver) =>
+                    selectedIds.includes(reciver.id)
                 ),
                 selectedTemplate?.content || "",
                 selectedTemplate?.subject || "",
                 templateId
               );
+              setIsSending(false);
+              toast.success("Mails sent successfully");
+            } catch (error) {
+              setIsSending(false);
+              toast.error("Failed to send mails");
+            }
             }}
           >
-            Send Mails
+           {isSending ? "Sending..." : "Send Mails"}
           </Button>
         </div>
       </div>
@@ -178,7 +187,7 @@ const NewTable = ({
               {visibleColumns.map((column) => (
                 <TableHead key={column}>{column}</TableHead>
               ))}
-              <TableHead>Opened On</TableHead>
+              {/* <TableHead>Opened On</TableHead> */}
               <TableHead>Opened Count</TableHead>
             </TableRow>
           </TableHeader>
@@ -213,7 +222,7 @@ const NewTable = ({
                   {visibleColumns.map((column) => (
                     <TableCell key={column}>{variables[column]}</TableCell>
                   ))}
-                  <TableCell>{reciver.openedAt ? moment(reciver.openedAt).calendar() : "-"}</TableCell>
+                  {/* <TableCell>{reciver.openedAt ? moment(reciver.openedAt).calendar() : "-"}</TableCell> */}
                   <TableCell>{reciver.openedCount}</TableCell>
                 </TableRow>
               );

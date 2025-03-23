@@ -35,13 +35,14 @@ const CreateEmailTemplateDialog = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const variables = [...new Set([...extractVariables(emailTemplate.content), ...extractVariables(emailTemplate.subject)])];
     try {
       await createTemplate({
         name: emailTemplate.name,
         userId: auth.currentUser!.uid,
         subject: emailTemplate.subject,
         content: emailTemplate.content,
-        variable: [...extractVariables(emailTemplate.content),...extractVariables(emailTemplate.subject)],
+        variable: variables,
         membersCount: 0,
         mailsSent: 0,
         openedCount: 0,

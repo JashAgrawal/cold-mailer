@@ -1,4 +1,4 @@
-import { collection, addDoc, deleteDoc, doc, getDocs, query, where, getDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, deleteDoc, doc, getDocs, query, where, getDoc,updateDoc } from 'firebase/firestore';
 import { IReciver } from '../components/mailer/type';
 import { db } from '../config/firebase';
 
@@ -31,7 +31,7 @@ export const getReceiver = async (id: string): Promise<IReciver | null> => {
 // Update a receiver
 export const updateReceiver = async (id: string, data: Partial<IReciver>): Promise<void> => {
   const docRef = doc(db, COLLECTION_NAME, id);
-  await setDoc(docRef, data);
+  await updateDoc(docRef, data);
 };
 
 // Delete a receiver
@@ -43,5 +43,5 @@ export const deleteReceiver = async (id: string): Promise<void> => {
 // Update receiver status
 export const updateReceiverStatus = async (id: string, status: IReciver['status']): Promise<void> => {
   const docRef = doc(db, COLLECTION_NAME, id);
-  await setDoc(docRef, { status });
+  await updateDoc(docRef, { status });
 };
