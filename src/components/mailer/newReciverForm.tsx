@@ -49,45 +49,26 @@ const NewReciverForm = ({ templateId }: { templateId: string }) => {
         membersCount: (selectedTemplate?.membersCount || 0) + 1,
       });
     },
-    onMutate: async ({ email, variables, templateId }) => {
-      await queryClient.cancelQueries({
-        queryKey: ["receivers", templateId],
-      });
-      queryClient.setQueryData(
-        ["receivers", templateId],
-        (oldRecivers: any) => {
-          if (oldRecivers) {
-            const updatedRecivers = [
-              ...oldRecivers,
-              {
-                id: "" + Math.floor(10000 + Math.random() * 90000),
-                email,
-                templateId,
-                variables: JSON.stringify(variables),
-                status: "pending",
-              },
-            ];
-            return updatedRecivers;
-          }
-          return oldRecivers;
-        }
-      );
-    },
     onSuccess: () => {
       toast.success("Reciver added successfully");
     },
     onError: () => {
       toast.error("Failed to add reciver");
+    },
+    onSettled: () => {
       queryClient.invalidateQueries({
         queryKey: ["receivers", templateId],
       });
-    },
+    }
   });
 
   if (!selectedTemplate || !selectedTemplate.variable) return null;
 
   return (
-    <form className="flex items-center gap-4 bg-gray-100 p-4 rounded-md fixed bottom-24 left-10 right-10">
+    <form onSubmit={(e) => {
+      e.preventDefault();
+      handleAddReciverMutations.mutate({ email, templateId, variables });
+    }} className="flex items-center gap-4 bg-gray-100 p-4 rounded-md fixed bottom-24 left-10 right-10">
       {selectedTemplate.variable.map((variable) => (
         <Input
           key={variable}
@@ -113,9 +94,6 @@ const NewReciverForm = ({ templateId }: { templateId: string }) => {
 
       <Button
         type="submit"
-        onClick={() =>
-          handleAddReciverMutations.mutate({ email, templateId, variables })
-        }
       >
         Add Reciver
       </Button>

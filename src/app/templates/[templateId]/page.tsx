@@ -9,7 +9,7 @@ import React, { useEffect } from 'react'
 
 const Page = ({params}: {params: Promise<{templateId: string}>}) => {
   const [tId,setTId] = React.useState('');
-  const {selectedTemplate} = useEmailTemplateStore();
+  const {setSelectedTemplate} = useEmailTemplateStore();
 
   const {data:receivers} = useQuery({
     queryKey: ["receivers", tId],
@@ -23,7 +23,7 @@ const Page = ({params}: {params: Promise<{templateId: string}>}) => {
       const template = await getTemplate(templateId);
       if (template) {
         setTId(templateId);
-        useEmailTemplateStore.setState({selectedTemplate: template});
+        setSelectedTemplate(template);
       }
     };
     fetchTemplateId();

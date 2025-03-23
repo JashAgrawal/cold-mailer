@@ -17,7 +17,7 @@ import { EmailTemplateInput } from "./type";
 import { extractVariables } from "@/utils/data";
 import { createTemplate } from "@/db/templates";
 import { toast } from "sonner";
-import { auth } from "@/config/firebase";
+import { useUser } from "@clerk/nextjs";
 
 const CreateEmailTemplateDialog = ({
   refetch,
@@ -25,9 +25,10 @@ const CreateEmailTemplateDialog = ({
   refetch: any;
 }) => {
   const [open, setOpen] = React.useState(false);
+  const {user} = useUser();
   const [emailTemplate, setEmailTemplate] = React.useState<EmailTemplateInput>({
     name: "",
-    userId: auth.currentUser!.uid,
+    userId: user?.id!,
     subject: "",
     content: "",
     variable: [],
@@ -39,7 +40,7 @@ const CreateEmailTemplateDialog = ({
     try {
       await createTemplate({
         name: emailTemplate.name,
-        userId: auth.currentUser!.uid,
+        userId: user?.id!,
         subject: emailTemplate.subject,
         content: emailTemplate.content,
         variable: variables,
@@ -49,7 +50,7 @@ const CreateEmailTemplateDialog = ({
       });
       setEmailTemplate({
         name: "",
-        userId: auth.currentUser!.uid,
+        userId: user?.id!,
         subject: "",
         content: "",
         variable: [],

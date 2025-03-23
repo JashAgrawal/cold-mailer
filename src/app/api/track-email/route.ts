@@ -5,6 +5,7 @@ import { NextRequest } from "next/server";
 
 export async function GET(req:NextRequest) {
     const { searchParams } = new URL(req.url);
+    console.log("called");
     const reciverId = searchParams.get('reciverId');
   
     if (!reciverId) {

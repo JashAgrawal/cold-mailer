@@ -36,3 +36,10 @@ const COLLECTION_NAME = 'templates';
       await docRef.update(updates);
     }
   };
+
+  // Get templates by user
+  export const getTemplatesByUser = async (userId: string): Promise<IEmailTemplate[]> => {
+    const query = db.collection(COLLECTION_NAME).where('userId', '==', userId);
+    const snapshot = await query.get();
+    return snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })) as IEmailTemplate[];
+  };

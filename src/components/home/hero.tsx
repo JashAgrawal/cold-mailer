@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,51 +14,13 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import SignInButton from "../common/signInButton";
-import { auth } from "@/config/firebase";
+import { SignInButton,SignedIn,SignedOut, UserButton } from "@clerk/nextjs";
+import Navbar from "../common/navbar";
 
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-40 px-4 w-full border-b bg-background">
-        <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-          <Link href="/" className="flex gap-2 items-center text-xl font-bold">
-            <Mail className="h-6 w-6 text-primary" />
-            <span>MailMaster</span>
-          </Link>
-          <div className="flex flex-1 items-center justify-end space-x-4">
-            <nav className="flex items-center space-x-4">
-              <Link
-                href="#features"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Features
-              </Link>
-              <Link
-                href="#how-it-works"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                How It Works
-              </Link>
-              <Link
-                href="#pricing"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                Pricing
-              </Link>
-              <Link
-                href="#faq"
-                className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-              >
-                FAQ
-              </Link>
-            </nav>
-          </div>
-          <div className="px-4 flex items-center space-x-2">
-          <SignInButton/>
-          </div>
-        </div>
-      </header>
+      <Navbar/>
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
           <div className="container px-4 md:px-6">
@@ -73,15 +36,16 @@ export default function LandingPage() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row items-center">
-                  {auth.currentUser?.uid ? (
-                    <Link href="/dashboard">
-                      <Button size="lg" className="px-8">
-                       Go to Dashboard
-                      </Button>
-                    </Link>
-                  ) : (
+                  <SignedOut>
                     <SignInButton />
-                  )}
+                  </SignedOut>
+                  <SignedIn>
+                    <Link href="/templates">
+                    <Button size="lg" className="px-8">
+                      Go to Dashboard
+                    </Button>
+                    </Link>
+                  </SignedIn>
                   <Link href="#how-it-works">
                     <Button size="lg" variant="outline" className="px-8">
                       See how it works

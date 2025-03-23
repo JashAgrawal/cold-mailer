@@ -22,9 +22,12 @@ const TemplateCard = ({ template }: { template: IEmailTemplate }) => {
       <CardContent>
         <div className="flex flex-wrap gap-2 mb-6">
           <p className="text-sm text-gray-500">Variables :- </p>
-          {template.variable.map((variable, index) => (
+          {template.variable.slice(0, 3).map((variable, index) => (
             <Badge key={index}>{variable}</Badge>
           ))}
+          {template.variable.length > 3 && (
+            <Badge key="...">...</Badge>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 text-sm">

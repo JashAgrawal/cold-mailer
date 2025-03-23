@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useEmailTemplateStore } from "@/store/template";
@@ -69,6 +70,9 @@ const NewTable = ({
     },
     onSuccess: () => {
       toast.success("Reciver deleted successfully");
+      queryClient.invalidateQueries({
+        queryKey: ["receivers", templateId],
+      });
     },
     onError: () => {
       toast.error("Failed to delete reciver");
@@ -151,6 +155,9 @@ const NewTable = ({
                 templateId
               );
               setIsSending(false);
+              queryClient.invalidateQueries({
+                queryKey: ["receivers", templateId],
+              });
               toast.success("Mails sent successfully");
             } catch (error) {
               setIsSending(false);
@@ -192,6 +199,13 @@ const NewTable = ({
             </TableRow>
           </TableHeader>
           <TableBody>
+            {reciverData.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} className="h-24 text-center">
+                  No recivers found
+                </TableCell>
+              </TableRow>
+            )}
             {reciverData.filter((reciver) =>
               reciver.email.toLowerCase().includes(search.toLowerCase())
             ).map((reciver) => {
