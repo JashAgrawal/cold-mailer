@@ -9,10 +9,14 @@ if (!serviceAccount || !serviceAccount.project_id) {
 
 
 
-const app = getApp(appName) ? getApp(appName) : initializeApp({
+// const app = getApp(appName) ? getApp(appName) : initializeApp({
+//   credential: cert(serviceAccount),
+// //   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL as string,
+// }, appName);
+const app = initializeApp({
   credential: cert(serviceAccount),
 //   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL as string,
-}, appName);
+}, appName); 
 
 const db = getFirestore(app);
 
