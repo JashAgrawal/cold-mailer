@@ -7,9 +7,7 @@ if (!serviceAccount || !serviceAccount.project_id) {
   throw new Error("FIREBASE_ADMIN_SERVICE_ACCOUNT is not defined");
 }
 
-
-
-const app = getApp(appName) ? getApp(appName) : initializeApp({
+const app = initializeApp({
   credential: cert(serviceAccount),
 //   databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL as string,
 }, appName);
