@@ -1,5 +1,6 @@
 import { getReceiver, updateReceiver } from "@/db/server-env/recivers";
 import { getTemplate, updateTemplate } from "@/db/server-env/templates";
+import { Timestamp } from "firebase-admin/firestore";
 import { NextRequest } from "next/server";
 
 export async function GET(req:NextRequest) {
@@ -22,7 +23,7 @@ export async function GET(req:NextRequest) {
         return Response.json({message:"Template Not found"}, {status: 404});
     }
 
-    await updateReceiver(reciverId, { openedAt: new Date(), openedCount: reciver.openedCount + 1 });
+    await updateReceiver(reciverId, { openedAt: Timestamp.now().toDate() , openedCount: reciver.openedCount + 1 });
     await updateTemplate((template.id || ""), { openedCount: template.openedCount + 1 });
     // Optionally store tracking data in a database like Supabase
     // await saveEmailOpen(emailId);

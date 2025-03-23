@@ -33,3 +33,4 @@ export const updateReceiver = async (id: string, data: Partial<IReciver>): Promi
     updatedAt: Timestamp.now()
   });
 };
+
