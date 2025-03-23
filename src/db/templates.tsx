@@ -1,4 +1,4 @@
-import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, getDoc, query, where, Timestamp } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs, getDoc, query, where, Timestamp, setDoc } from 'firebase/firestore';
 import { IEmailTemplate } from '../components/email/type';
 import { db } from '../config/firebase';
 
@@ -49,7 +49,7 @@ export const getTemplate = async (id: string): Promise<IEmailTemplate | null> =>
 // Update a template
 export const updateTemplate = async (id: string, data: Partial<IEmailTemplate>): Promise<void> => {
   const docRef = doc(db, COLLECTION_NAME, id);
-  await updateDoc(docRef, {
+  await setDoc(docRef, {
     ...data,
     updatedAt: Timestamp.now()
   });
@@ -70,6 +70,6 @@ export const updateTemplateStats = async (id: string, membersCount?: number, mai
   if (mailsSent !== undefined) updates.mailsSent = mailsSent;
   
   if (Object.keys(updates).length > 0) {
-    await updateDoc(docRef, updates);
+    await setDoc(docRef, updates);
   }
 };

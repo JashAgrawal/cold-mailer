@@ -9,6 +9,7 @@ export interface IEmailTemplate {
   variable: string[];
   membersCount: number;
   mailsSent: number;
+  openedCount: number;
   createdAt: Date;
   updatedAt: Date;
   members?: IReciver[];

@@ -1,9 +1,11 @@
 export interface IReciver {
   id: string;
   email: string;
-  status: "sent" | "pending" | "failed";
+  status: "sent" | "pending" | "failed" | "opened";
   variables: string;
   templateId: string;
+  openedAt: Date | null;
+  openedCount: number;
 }
 
 export const getDefaultReciver = (): IReciver => ({
@@ -12,6 +14,8 @@ export const getDefaultReciver = (): IReciver => ({
   status: "pending",
   variables: "",
   templateId: "",
+  openedAt: null,
+  openedCount: 0,
 });
 
 export const reciverData: IReciver[] = [getDefaultReciver(), getDefaultReciver()];

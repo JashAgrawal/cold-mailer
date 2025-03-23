@@ -1,11 +1,12 @@
 "use server";
-import { getReceiversByTemplate, updateReceiverStatus } from "@/db/recivers";
-import { getEmailContent } from "./data";
+import { getReceiversByTemplate, updateReceiverStatus } from "@/db/server-env/recivers";
+import { getEmailContent, getSubjectContent } from "./data";
 import { getTransporter } from "./realMailer";
 import { IReciver } from "@/components/mailer/type";
-import { updateTemplate } from "@/db/templates";
+import { updateTemplate } from "@/db/server-env/templates";
 
 export const sendMails = async (recivers: IReciver[],content: string,subject: string,templateId: string) => {
+  console.log(templateId);
   try {
     await Promise.all(
       recivers.map((reciver) => {
@@ -24,18 +25,19 @@ export const sendMails = async (recivers: IReciver[],content: string,subject: st
 export const sendSingleMail = async (reciver: IReciver,content: string,variables:string,subject: string) => {
     const transporter = await getTransporter();
     try {
+      const trackingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/track-email?reciverId=${reciver.id}`;
       const mailOptions = {
         from: process.env.EMAIL_FROM,
         to: reciver.email,
-        subject: subject,
-        text: getEmailContent(content,variables),
+        subject: getSubjectContent(subject,variables),
+        html: getEmailContent(content,variables)+`<img src="${trackingUrl}" alt=" " width="1" height="1" style="display:none;" />`,
       };
       await transporter.sendMail(mailOptions);
-      updateReceiverStatus(reciver.id, "sent");
+      await updateReceiverStatus(reciver.id, "sent");
       return true;
     } catch (error) {
-      console.error("Error sending emails:", error);
-      updateReceiverStatus(reciver.id, "failed");
+      console.error("Error sending emails single:", error);
+      await updateReceiverStatus(reciver.id, "failed");
       return false;
     }
   };

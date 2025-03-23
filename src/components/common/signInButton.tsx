@@ -30,7 +30,7 @@ const SignInButton = () => {
     return (
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button>
+          <Button variant="ghost">
             <Avatar>
               <AvatarImage src={auth.currentUser.photoURL ?? ""} />
               <AvatarFallback>
@@ -50,7 +50,7 @@ const SignInButton = () => {
     );
   }
 
-  return <Button onClick={handleGoogleLogin}>Sign In With Google</Button>;
+  return <Button onClick={handleGoogleLogin}>Get Started</Button>;
 };
 
 export default SignInButton;

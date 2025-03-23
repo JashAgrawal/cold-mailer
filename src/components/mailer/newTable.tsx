@@ -7,6 +7,7 @@ import { IReciver } from "@/components/mailer/type";
 import { deleteReceiver } from "@/db/recivers";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import moment from "moment";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -177,6 +178,8 @@ const NewTable = ({
               {visibleColumns.map((column) => (
                 <TableHead key={column}>{column}</TableHead>
               ))}
+              <TableHead>Opened On</TableHead>
+              <TableHead>Opened Count</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -199,14 +202,19 @@ const NewTable = ({
                     />
                   </TableCell>
                   <TableCell>
-                    <Badge variant={reciver.status === "pending" ? "secondary" : reciver.status === "sent" ? "default" : "destructive"} className="capitalize">
-                        {reciver.status}
-                    </Badge>
+                    <div>
+                      {reciver.status === "pending" && <Badge variant="secondary" className="capitalize">{reciver.status}</Badge>}
+                      {reciver.status === "sent" && <Badge variant="default" className="capitalize">{reciver.status}</Badge>}
+                      {reciver.status === "failed" && <Badge variant="destructive" className="capitalize">{reciver.status}</Badge>}
+                      {reciver.status === "opened" && <Badge variant="default" className="capitalize">{reciver.status}</Badge>}
+                    </div>
                   </TableCell>
                   <TableCell>{reciver.email}</TableCell>
                   {visibleColumns.map((column) => (
                     <TableCell key={column}>{variables[column]}</TableCell>
                   ))}
+                  <TableCell>{reciver.openedAt ? moment(reciver.openedAt).calendar() : "-"}</TableCell>
+                  <TableCell>{reciver.openedCount}</TableCell>
                 </TableRow>
               );
             })}

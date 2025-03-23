@@ -27,7 +27,7 @@ const NewReciverForm = ({templateId}: {templateId: string}) => {
   const handleAddReciverMutations = useMutation({
     mutationFn: async ({email, templateId, variables}: {email: string, templateId: string, variables: Record<string, string>}) => {
       const variablesJson = JSON.stringify(variables);
-      await createReceiver({email, templateId, variables: variablesJson,status:"pending"});
+      await createReceiver({email, templateId, variables: variablesJson,status:"pending", openedAt: null, openedCount: 0});
       await updateTemplate(templateId, {membersCount: (selectedTemplate?.membersCount || 0) + 1});
     },
     onMutate: async ({email, variables,templateId}) => {

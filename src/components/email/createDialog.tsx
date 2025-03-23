@@ -41,9 +41,10 @@ const CreateEmailTemplateDialog = ({
         userId: auth.currentUser!.uid,
         subject: emailTemplate.subject,
         content: emailTemplate.content,
-        variable: extractVariables(emailTemplate.content),
+        variable: [...extractVariables(emailTemplate.content),...extractVariables(emailTemplate.subject)],
         membersCount: 0,
         mailsSent: 0,
+        openedCount: 0,
       });
       setEmailTemplate({
         name: "",

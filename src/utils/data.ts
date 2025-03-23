@@ -45,7 +45,20 @@ export const getEmailContent = (content: string,variables: string) => {
     emailContent = emailContent.replace(`[${key}]`, value);
    });
    
-   console.log(emailContent);
+   return `<p>${emailContent}</p>`; 
+}
 
-   return emailContent; 
+export const getSubjectContent = (subject: string,variables: string) => {
+    let subjectContent = subject;
+    if(variables === ""){
+        return subjectContent;
+    }
+    
+    const variablesObj: Record<string, string> = JSON.parse(variables);
+
+   Object.entries(variablesObj).forEach(([key, value]) => {
+    subjectContent = subjectContent.replace(`[${key}]`, value);
+   });
+   
+   return subjectContent; 
 }
