@@ -49,6 +49,26 @@ const Navbar = () => {
               >
                 FAQ
               </Link>
+              <Link
+                href="/blog"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  pathname.includes("/blog")
+                    ? "text-primary font-semibold"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Blog
+              </Link>
+              <Link
+                href="/guides"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  pathname.includes("/guides")
+                    ? "text-primary font-semibold"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Guides
+              </Link>
             </nav>
           ) : (
             <nav className="flex items-center space-x-6">
@@ -62,6 +82,26 @@ const Navbar = () => {
               >
                 Templates
               </Link>
+              <Link
+                href="/blog"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  pathname.includes("/blog")
+                    ? "text-primary font-semibold"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Blog
+              </Link>
+              <Link
+                href="/guides"
+                className={`text-sm font-medium transition-colors hover:text-primary ${
+                  pathname.includes("/guides")
+                    ? "text-primary font-semibold"
+                    : "text-muted-foreground"
+                }`}
+              >
+                Guides
+              </Link>
             </nav>
           )}
 
@@ -70,7 +110,7 @@ const Navbar = () => {
               <SignInButton />
             </SignedOut>
             <SignedIn>
-              <UserButton afterSignOutUrl="/" />
+              <UserButton />
             </SignedIn>
           </div>
         </div>
@@ -128,17 +168,41 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <Link
-                href="/templates"
-                className={`text-sm font-medium transition-colors hover:text-primary py-2 ${
-                  pathname.includes("/templates")
-                    ? "text-primary font-semibold"
-                    : "text-muted-foreground"
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Templates
-              </Link>
+              <>
+                <Link
+                  href="/templates"
+                  className={`text-sm font-medium transition-colors hover:text-primary py-2 ${
+                    pathname.includes("/templates")
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Templates
+                </Link>
+                <Link
+                  href="/blog"
+                  className={`text-sm font-medium transition-colors hover:text-primary py-2 ${
+                    pathname.includes("/blog")
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Blog
+                </Link>
+                <Link
+                  href="/guides"
+                  className={`text-sm font-medium transition-colors hover:text-primary py-2 ${
+                    pathname.includes("/guides")
+                      ? "text-primary font-semibold"
+                      : "text-muted-foreground"
+                  }`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Guides
+                </Link>
+              </>
             )}
             <div className="pt-4 border-t">
               <SignedOut>
@@ -147,7 +211,7 @@ const Navbar = () => {
               <SignedIn>
                 <div className="flex items-center gap-2">
                   <span className="text-sm text-muted-foreground">Account</span>
-                  <UserButton afterSignOutUrl="/" />
+                  <UserButton />
                 </div>
               </SignedIn>
             </div>

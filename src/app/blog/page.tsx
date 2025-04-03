@@ -7,19 +7,12 @@ import Navbar from "@/components/common/navbar";
 import { Button } from "@/components/ui/button";
 import BlogStructuredData from "./blog-structured-data";
 
-export const metadata = {
-  title: "Email Marketing Blog - MailMaster",
-  description: "Learn about email marketing best practices, cold outreach strategies, and how to improve your email campaigns.",
-  alternates: {
-    canonical: "https://mailer.jashagrawal.in/blog",
-  },
-};
-
-const blogPosts = [
+export const blogPosts = [
   {
     id: "1",
     title: "10 Email Templates That Actually Get Responses",
-    excerpt: "Discover the proven email templates that have helped our customers achieve 40%+ response rates in their cold outreach campaigns.",
+    excerpt:
+      "Discover the proven email templates that have helped our customers achieve 40%+ response rates in their cold outreach campaigns.",
     date: "April 3, 2024",
     author: "Jash Agrawal",
     category: "Email Templates",
@@ -28,7 +21,8 @@ const blogPosts = [
   {
     id: "2",
     title: "How to Personalize Your Cold Emails at Scale",
-    excerpt: "Learn how to use dynamic variables and segmentation to create personalized emails that feel hand-written, even when sending thousands.",
+    excerpt:
+      "Learn how to use dynamic variables and segmentation to create personalized emails that feel hand-written, even when sending thousands.",
     date: "March 28, 2024",
     author: "Jash Agrawal",
     category: "Personalization",
@@ -37,7 +31,8 @@ const blogPosts = [
   {
     id: "3",
     title: "The Ultimate Guide to Email Deliverability",
-    excerpt: "Ensure your emails reach the inbox, not the spam folder, with these proven deliverability best practices and technical setup tips.",
+    excerpt:
+      "Ensure your emails reach the inbox, not the spam folder, with these proven deliverability best practices and technical setup tips.",
     date: "March 15, 2024",
     author: "Jash Agrawal",
     category: "Deliverability",
@@ -52,18 +47,25 @@ export default function BlogPage() {
       <BlogStructuredData />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+          <div className="px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Email Marketing Blog</h1>
+                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+                  Email Marketing Blog
+                </h1>
                 <p className="max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Expert tips, strategies, and insights to improve your email marketing and cold outreach campaigns.
+                  Expert tips, strategies, and insights to improve your email
+                  marketing and cold outreach campaigns.
                 </p>
               </div>
             </div>
             <div className="mx-auto grid max-w-5xl gap-8 pt-12 sm:grid-cols-2 md:gap-12 lg:grid-cols-3">
               {blogPosts.map((post) => (
-                <Link key={post.id} href={`/blog/${post.slug}`} className="group relative overflow-hidden rounded-lg border bg-background p-6 shadow-md transition-all hover:shadow-lg">
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}?id=${post.id}`}
+                  className="group relative overflow-hidden rounded-lg border bg-background p-6 pt-12 shadow-md transition-all hover:shadow-lg"
+                >
                   <div className="absolute right-4 top-4 rounded-full bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
                     {post.category}
                   </div>
@@ -72,12 +74,15 @@ export default function BlogPage() {
                     <p className="text-muted-foreground">{post.excerpt}</p>
                   </div>
                   <div className="mt-6 flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                      <User className="h-4 w-4" />
-                      <span>{post.author}</span>
-                      <span className="mx-1">•</span>
-                      <Calendar className="h-4 w-4" />
-                      <span>{post.date}</span>
+                    <div className="flex flex-col gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center space-x-2">
+                        <User className="h-4 w-4" />
+                        <span>{post.author}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="h-4 w-4" />
+                        <span>{post.date}</span>
+                      </div>
                     </div>
                     <div className="text-primary group-hover:translate-x-1 transition-transform">
                       <ArrowRight className="h-4 w-4" />
@@ -95,12 +100,15 @@ export default function BlogPage() {
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
+          <div className="px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Subscribe to our newsletter</h2>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">
+                  Subscribe to our newsletter
+                </h2>
                 <p className="max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Get the latest email marketing tips and strategies delivered straight to your inbox.
+                  Get the latest email marketing tips and strategies delivered
+                  straight to your inbox.
                 </p>
               </div>
               <div className="mx-auto w-full max-w-md space-y-2">

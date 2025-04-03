@@ -1,0 +1,6 @@
+# Security Policy
+Contact: mailto:security@jashagrawal.in
+Expires: 2025-12-31T23:59:59.000Z
+Preferred-Languages: en
+Canonical: https://mailer.jashagrawal.in/.well-known/security.txt
+Policy: https://mailer.jashagrawal.in/security-policy

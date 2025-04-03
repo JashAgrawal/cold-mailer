@@ -1,6 +1,5 @@
 "use client";
 
-import type { Metadata } from "next";
 import CreateEmailTemplateDialog from "@/components/email/createDialog";
 import TemplateCard from "@/components/email/templateCard";
 import TemplateCardSkeleton from "@/components/email/templateCardSkeleton";
@@ -11,15 +10,6 @@ import React from "react";
 import { Mail, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import TemplatesStructuredData from "./templates-structured-data";
-
-export const metadata: Metadata = {
-  title: "Email Templates - MailMaster",
-  description:
-    "Create and manage your email templates with dynamic variables for personalized outreach campaigns.",
-  alternates: {
-    canonical: "https://mailer.jashagrawal.in/templates",
-  },
-};
 
 const Templates = () => {
   const { user } = useUser();
@@ -75,9 +65,11 @@ const Templates = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {templates?.map((template) => (
-              <TemplateCard key={template.id} template={template} />
-            ))}
+            {templates
+              ?.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+              ?.map((template) => (
+                <TemplateCard key={template.id} template={template} />
+              ))}
           </div>
         )}
       </div>

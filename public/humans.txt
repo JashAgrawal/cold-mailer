@@ -1,0 +1,12 @@
+/* TEAM */
+	Developer: Jash Agrawal
+	Contact: contact@jashagrawal.in
+	Twitter: @jashagrawal
+	From: India
+
+/* SITE */
+	Last update: 2024/04/03
+	Language: English
+	Doctype: HTML5
+	IDE: Visual Studio Code
+	Stack: Next.js, React, TypeScript, Tailwind CSS
