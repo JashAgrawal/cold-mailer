@@ -45,26 +45,26 @@ const TiptapEditor = ({
     },
   });
 
-  const setLink = useCallback(() => {
-    if (!editor) return;
+  // const setLink = useCallback(() => {
+  //   if (!editor) return;
 
-    const previousUrl = editor.getAttributes("link").href;
-    const url = window.prompt("URL", previousUrl);
+  //   const previousUrl = editor.getAttributes("link").href;
+  //   const url = window.prompt("URL", previousUrl);
 
-    // cancelled
-    if (url === null) {
-      return;
-    }
+  //   // cancelled
+  //   if (url === null) {
+  //     return;
+  //   }
 
-    // empty
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
+  //   // empty
+  //   if (url === "") {
+  //     editor.chain().focus().extendMarkRange("link").unsetLink().run();
+  //     return;
+  //   }
 
-    // update link
-    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  }, [editor]);
+  //   // update link
+  //   editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  // }, [editor]);
 
   if (!editor) {
     return null;
@@ -156,7 +156,7 @@ const TiptapEditor = ({
           >
             <ListOrdered className="h-4 w-4" />
           </Button>
-          <Button
+          {/* <Button
             type="button"
             variant="ghost"
             size="sm"
@@ -165,7 +165,7 @@ const TiptapEditor = ({
             title="Add Link"
           >
             <LinkIcon className="h-4 w-4" />
-          </Button>
+          </Button> */}
           <div className="ml-auto flex gap-1">
             <Button
               type="button"

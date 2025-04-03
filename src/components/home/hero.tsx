@@ -32,7 +32,8 @@ export default function LandingPage() {
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
                     Design templates with dynamic variables, personalize at
-                    scale, and track results—all in one platform.
+                    scale, and track results—all in one platform. Boost your
+                    cold outreach effectiveness with MailMaster.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row items-center">
@@ -137,7 +138,8 @@ export default function LandingPage() {
                 </h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed">
                   Our platform streamlines your outreach process from template
-                  creation to performance analysis.
+                  creation to performance analysis. MailMaster helps you create
+                  personalized email campaigns that get results.
                 </p>
               </div>
             </div>
@@ -651,32 +653,139 @@ export default function LandingPage() {
         </section>
       </main>
       <footer className="w-full border-t bg-background px-6">
-        <div className=" flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
-          <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
-            <Mail className="h-6 w-6 text-primary" />
-            <p className="text-center text-sm leading-loose md:text-left">
-              &copy; {new Date().getFullYear()} MailMaster. All rights reserved.
-            </p>
+        <div className="container py-8 md:py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Mail className="h-6 w-6 text-primary" />
+                <span className="text-xl font-bold">MailMaster</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Create personalized email campaigns, manage templates with
+                dynamic variables, and track performance metrics.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                &copy; {new Date().getFullYear()} MailMaster. All rights
+                reserved.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium">Product</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link
+                    href="#features"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Features
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#pricing"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Pricing
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="#faq"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    FAQ
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium">Resources</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link
+                    href="/blog"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/guides"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Email Marketing Guides
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/templates"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Template Gallery
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-sm font-medium">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link
+                    href="/terms"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Terms of Service
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/privacy"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Privacy Policy
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contact"
+                    className="text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div className="flex gap-4">
-            <Link
-              href="/terms"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Terms
-            </Link>
-            <Link
-              href="/privacy"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Privacy
-            </Link>
-            <Link
-              href="/contact"
-              className="text-sm text-muted-foreground hover:underline"
-            >
-              Contact
-            </Link>
+
+          <div className="mt-8 pt-8 border-t flex flex-col md:flex-row justify-between items-center gap-4">
+            <p className="text-xs text-muted-foreground">
+              MailMaster is an email marketing platform that helps businesses
+              create personalized email campaigns.
+            </p>
+            <div className="flex items-center gap-4">
+              <Link
+                href="https://twitter.com/jashagrawal"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                Twitter
+              </Link>
+              <Link
+                href="https://linkedin.com/in/jashagrawal"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                LinkedIn
+              </Link>
+              <Link
+                href="https://github.com/jashagrawal"
+                className="text-muted-foreground hover:text-foreground transition-colors"
+              >
+                GitHub
+              </Link>
+            </div>
           </div>
         </div>
       </footer>
