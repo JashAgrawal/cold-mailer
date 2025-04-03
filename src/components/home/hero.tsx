@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -14,16 +14,16 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { SignInButton,SignedIn,SignedOut, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import Navbar from "../common/navbar";
 
 export default function LandingPage() {
   return (
     <div className="flex min-h-screen flex-col">
-      <Navbar/>
+      <Navbar />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48">
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
               <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
@@ -41,9 +41,9 @@ export default function LandingPage() {
                   </SignedOut>
                   <SignedIn>
                     <Link href="/templates">
-                    <Button size="lg" className="px-8">
-                      Go to Dashboard
-                    </Button>
+                      <Button size="lg" className="px-8">
+                        Go to Dashboard
+                      </Button>
                     </Link>
                   </SignedIn>
                   <Link href="#how-it-works">
@@ -126,7 +126,7 @@ export default function LandingPage() {
           id="features"
           className="w-full py-12 md:py-24 lg:py-32 bg-muted"
         >
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
@@ -207,7 +207,7 @@ export default function LandingPage() {
         </section>
 
         <section id="how-it-works" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
@@ -307,7 +307,7 @@ export default function LandingPage() {
           id="pricing"
           className="w-full py-12 md:py-24 lg:py-32 bg-muted"
         >
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
@@ -448,7 +448,7 @@ export default function LandingPage() {
         </section>
 
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
@@ -547,7 +547,7 @@ export default function LandingPage() {
         </section>
 
         <section id="faq" className="w-full py-12 md:py-24 lg:py-32 bg-muted">
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-primary px-3 py-1 text-sm text-primary-foreground">
@@ -620,7 +620,7 @@ export default function LandingPage() {
         </section>
 
         <section className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container px-4 md:px-6">
+          <div className=" px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-6 text-center">
               <div className="space-y-2">
                 <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">
@@ -651,7 +651,7 @@ export default function LandingPage() {
         </section>
       </main>
       <footer className="w-full border-t bg-background">
-        <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+        <div className=" flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
           <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
             <Mail className="h-6 w-6 text-primary" />
             <p className="text-center text-sm leading-loose md:text-left">

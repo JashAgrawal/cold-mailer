@@ -21,44 +21,46 @@
 // https://jashagrawal.in/linkedin | https://jashagrawal.in`
 
 export function extractVariables(str: string) {
-    const regex = /\[([^\]]+)\]/g;
-    const matches = [];
-    let match;
-    
-    while ((match = regex.exec(str)) !== null) {
-      matches.push(match[1]);
-    }
-    
-    return matches;
+  // Extract variables from text, even if they're inside HTML tags
+  const regex = /\[([^\]]+)\]/g;
+  const matches = [];
+  let match;
+
+  while ((match = regex.exec(str)) !== null) {
+    matches.push(match[1]);
+  }
+
+  return matches;
 }
 // export const emailVariables = extractVariables(emailTemplate);
 
-export const getEmailContent = (content: string,variables: string) => {
-    let emailContent = content;
-    if(variables === ""){
-        return emailContent;
-    }
-    
-    const variablesObj: Record<string, string> = JSON.parse(variables);
+export const getEmailContent = (content: string, variables: string) => {
+  let emailContent = content;
+  if (variables === "") {
+    return emailContent;
+  }
 
-   Object.entries(variablesObj).forEach(([key, value]) => {
+  const variablesObj: Record<string, string> = JSON.parse(variables);
+
+  Object.entries(variablesObj).forEach(([key, value]) => {
     emailContent = emailContent.replaceAll(`[${key}]`, value);
-   });
-   
-   return `<p>${emailContent}</p>`; 
-}
+  });
 
-export const getSubjectContent = (subject: string,variables: string) => {
-    let subjectContent = subject;
-    if(variables === ""){
-        return subjectContent;
-    }
-    
-    const variablesObj: Record<string, string> = JSON.parse(variables);
+  // Since content is already HTML from the rich text editor, don't wrap in <p> tags
+  return emailContent;
+};
 
-   Object.entries(variablesObj).forEach(([key, value]) => {
+export const getSubjectContent = (subject: string, variables: string) => {
+  let subjectContent = subject;
+  if (variables === "") {
+    return subjectContent;
+  }
+
+  const variablesObj: Record<string, string> = JSON.parse(variables);
+
+  Object.entries(variablesObj).forEach(([key, value]) => {
     subjectContent = subjectContent.replace(`[${key}]`, value);
-   });
-   
-   return subjectContent; 
-}
+  });
+
+  return subjectContent;
+};

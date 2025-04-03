@@ -44,40 +44,40 @@ const NewTable = ({
   const [visibleColumns, setVisibleColumns] = React.useState<string[]>([]);
   const { selectedSender } = useSenderStore();
   const [selectedIds, setSelectedIds] = React.useState<string[]>([]);
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const queryClient = useQueryClient();
   const { selectedTemplate } = useEmailTemplateStore();
 
-  const handleRemoveReciverMutation = useMutation({
+  const handleRemoveReceiverMutation = useMutation({
     mutationFn: async (id: string) => {
       await deleteReceiver(id);
     },
     onMutate: async (id: string) => {
-      // setIsCartUpdating(true);
       await queryClient.cancelQueries({
         queryKey: ["receivers", templateId],
       });
       queryClient.setQueryData(
         ["receivers", templateId],
-        (oldRecivers: any) => {
-          if (oldRecivers) {
-            const updatedRecivers = oldRecivers.filter(
-              (reciver: any) => reciver.id !== id
+        (oldReceivers: any) => {
+          if (oldReceivers) {
+            const updatedReceivers = oldReceivers.filter(
+              (receiver: any) => receiver.id !== id
             );
-            return updatedRecivers;
+            return updatedReceivers;
           }
-          return oldRecivers;
+          return oldReceivers;
         }
       );
     },
     onSuccess: () => {
-      toast.success("Reciver deleted successfully");
+      toast.success("Receiver deleted successfully");
       queryClient.invalidateQueries({
         queryKey: ["receivers", templateId],
       });
     },
     onError: () => {
-      toast.error("Failed to delete reciver");
+      toast.error("Failed to delete receiver");
       queryClient.invalidateQueries({
         queryKey: ["receivers", templateId],
       });
@@ -86,34 +86,52 @@ const NewTable = ({
 
   useEffect(() => {
     if (reciverData.length > 0) {
-      const variables = JSON.parse(reciverData[0].variables);
-      setAllColumns(Object.keys(variables));
-      setVisibleColumns(Object.keys(variables));
+      try {
+        const variables = JSON.parse(reciverData[0].variables);
+        const columnKeys = Object.keys(variables);
+        setAllColumns(columnKeys);
+        setVisibleColumns(columnKeys);
+      } catch (error) {
+        console.error("Error parsing variables:", error);
+        setAllColumns([]);
+        setVisibleColumns([]);
+      }
     }
   }, [reciverData, templateId]);
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center py-4 gap-4">
         <Input
           placeholder="Filter emails..."
           value={search}
           onChange={(event) => setSearch(event.target.value)}
-          className="max-w-sm"
+          className="w-full md:max-w-sm"
         />
-        <div className="w-full flex justify-end gap-4">
+        <div className="w-full flex flex-wrap justify-end gap-2 md:gap-4">
           <SelectSender />
           <Button
             variant="destructive"
             onClick={() => {
-              reciverData.forEach((reciver) => {
-                if (selectedIds.includes(reciver.id)) {
-                  handleRemoveReciverMutation.mutate(reciver.id);
-                }
+              if (selectedIds.length === 0) {
+                toast.error("Please select at least one receiver");
+                return;
+              }
+              setIsDeleting(true);
+              Promise.all(
+                reciverData
+                  .filter((receiver) => selectedIds.includes(receiver.id))
+                  .map((receiver) =>
+                    handleRemoveReceiverMutation.mutate(receiver.id)
+                  )
+              ).finally(() => {
+                setIsDeleting(false);
+                setSelectedIds([]);
               });
             }}
+            disabled={isDeleting || selectedIds.length === 0}
           >
-            Delete
+            {isDeleting ? "Deleting..." : "Delete"}
           </Button>
 
           <DropdownMenu>
@@ -145,36 +163,44 @@ const NewTable = ({
           </DropdownMenu>
 
           <Button
-            disabled={isSending}
+            disabled={isSending || selectedIds.length === 0 || !selectedSender}
             onClick={async () => {
               try {
-                setIsSending(true);
-                if (!selectedSender) {
-                  toast.error("Please select a sender");
-                  setIsSending(false);
+                if (selectedIds.length === 0) {
+                  toast.error("Please select at least one receiver");
                   return;
                 }
+
+                if (!selectedSender) {
+                  toast.error("Please select a sender");
+                  return;
+                }
+
+                setIsSending(true);
                 await sendMails(
-                  reciverData.filter((reciver) =>
-                    selectedIds.includes(reciver.id)
+                  reciverData.filter((receiver) =>
+                    selectedIds.includes(receiver.id)
                   ),
                   selectedTemplate?.content || "",
                   selectedTemplate?.subject || "",
                   templateId,
                   selectedSender
                 );
-                setIsSending(false);
+
                 queryClient.invalidateQueries({
                   queryKey: ["receivers", templateId],
                 });
-                toast.success("Mails sent successfully");
+                toast.success("Emails sent successfully");
+                setSelectedIds([]);
               } catch (error) {
+                console.error("Error sending emails:", error);
+                toast.error("Failed to send emails");
+              } finally {
                 setIsSending(false);
-                toast.error("Failed to send mails");
               }
             }}
           >
-            {isSending ? "Sending..." : "Send Mails"}
+            {isSending ? "Sending..." : "Send Emails"}
           </Button>
         </div>
       </div>
@@ -212,61 +238,84 @@ const NewTable = ({
           <TableBody>
             {reciverData.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
-                  No recivers found
+                <TableCell
+                  colSpan={visibleColumns.length + 4}
+                  className="h-24 text-center"
+                >
+                  No receivers found
                 </TableCell>
               </TableRow>
             )}
             {reciverData
-              .filter((reciver) =>
-                reciver.email.toLowerCase().includes(search.toLowerCase())
+              .filter((receiver) =>
+                receiver.email.toLowerCase().includes(search.toLowerCase())
               )
-              .map((reciver) => {
-                const variables = JSON.parse(reciver.variables);
+              .map((receiver) => {
+                let variables = {};
+                try {
+                  variables = JSON.parse(receiver.variables);
+                } catch (error) {
+                  console.error(
+                    "Error parsing variables for receiver:",
+                    receiver.id
+                  );
+                }
+
                 return (
-                  <TableRow key={reciver.id}>
+                  <TableRow key={receiver.id}>
                     <TableCell>
                       <Checkbox
-                        checked={selectedIds.includes(reciver.id)}
+                        checked={selectedIds.includes(receiver.id)}
                         onCheckedChange={(value: any) =>
                           setSelectedIds((prev) =>
                             value
-                              ? [...prev, reciver.id]
-                              : prev.filter((id) => id !== reciver.id)
+                              ? [...prev, receiver.id]
+                              : prev.filter((id) => id !== receiver.id)
                           )
                         }
                       />
                     </TableCell>
                     <TableCell>
                       <div>
-                        {reciver.status === "pending" && (
+                        {receiver.status === "pending" && (
                           <Badge variant="secondary" className="capitalize">
-                            {reciver.status}
+                            {receiver.status}
                           </Badge>
                         )}
-                        {reciver.status === "sent" && (
-                          <Badge variant="default" className="capitalize">
-                            {reciver.status}
+                        {receiver.status === "sent" && (
+                          <Badge
+                            variant="default"
+                            className="capitalize bg-blue-500"
+                          >
+                            {receiver.status}
                           </Badge>
                         )}
-                        {reciver.status === "failed" && (
+                        {receiver.status === "failed" && (
                           <Badge variant="destructive" className="capitalize">
-                            {reciver.status}
+                            {receiver.status}
                           </Badge>
                         )}
-                        {reciver.status === "opened" && (
-                          <Badge variant="default" className="capitalize">
-                            {reciver.status}
+                        {receiver.status === "opened" && (
+                          <Badge
+                            variant="default"
+                            className="capitalize bg-green-500"
+                          >
+                            {receiver.status}
                           </Badge>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell>{reciver.email}</TableCell>
+                    <TableCell className="font-medium">
+                      {receiver.email}
+                    </TableCell>
                     {visibleColumns.map((column) => (
-                      <TableCell key={column}>{variables[column]}</TableCell>
+                      <TableCell key={column}>
+                        {variables[column as keyof typeof variables] || "-"}
+                      </TableCell>
                     ))}
-                    {/* <TableCell>{reciver.openedAt ? moment(reciver.openedAt).calendar() : "-"}</TableCell> */}
-                    <TableCell>{reciver.openedCount}</TableCell>
+                    <TableCell className="text-center">
+                      {receiver.openedCount}
+                    </TableCell>
                   </TableRow>
                 );
               })}
