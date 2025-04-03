@@ -6,45 +6,15 @@ import Link from "next/link";
 import Navbar from "@/components/common/navbar";
 import { Button } from "@/components/ui/button";
 import BlogStructuredData from "./blog-structured-data";
-
-export const blogPosts = [
-  {
-    id: "1",
-    title: "10 Email Templates That Actually Get Responses",
-    excerpt:
-      "Discover the proven email templates that have helped our customers achieve 40%+ response rates in their cold outreach campaigns.",
-    date: "April 3, 2024",
-    author: "Jash Agrawal",
-    category: "Email Templates",
-    slug: "email-templates-that-get-responses",
-  },
-  {
-    id: "2",
-    title: "How to Personalize Your Cold Emails at Scale",
-    excerpt:
-      "Learn how to use dynamic variables and segmentation to create personalized emails that feel hand-written, even when sending thousands.",
-    date: "March 28, 2024",
-    author: "Jash Agrawal",
-    category: "Personalization",
-    slug: "personalize-cold-emails-at-scale",
-  },
-  {
-    id: "3",
-    title: "The Ultimate Guide to Email Deliverability",
-    excerpt:
-      "Ensure your emails reach the inbox, not the spam folder, with these proven deliverability best practices and technical setup tips.",
-    date: "March 15, 2024",
-    author: "Jash Agrawal",
-    category: "Deliverability",
-    slug: "email-deliverability-guide",
-  },
-];
+import { blogPosts } from "./data";
+import MetaData from "./metadata";
 
 export default function BlogPage() {
   return (
     <div className="flex min-h-screen flex-col">
       <Navbar />
       <BlogStructuredData />
+      <MetaData />
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="px-4 md:px-6">

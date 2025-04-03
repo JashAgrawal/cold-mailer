@@ -1,6 +1,5 @@
 "use client";
-
-import { blogPosts } from "@/app/blog/data";
+import { blogPosts } from "@/app/guides/data";
 import { useEffect } from "react";
 
 export default function BlogPostStructuredData({ id }: { id: string }) {
