@@ -1,19 +1,18 @@
-"use client"
+"use client";
 import Navbar from "@/components/common/navbar";
 import React from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 
-const MainLayout =  ({ children }: { children: React.ReactNode }) => {
-  
+const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const queryClient = new QueryClient({
-    defaultOptions:{
-      queries:{
+    defaultOptions: {
+      queries: {
         refetchOnWindowFocus: false,
         retry: 1,
         staleTime: 60 * 1000,
-      }
-    }
+      },
+    },
   });
 
   return (
@@ -21,7 +20,7 @@ const MainLayout =  ({ children }: { children: React.ReactNode }) => {
       <Navbar />
       <SignedIn>
         <QueryClientProvider client={queryClient}>
-          <div className="container p-16">{children}</div>
+          <div className="p-16">{children}</div>
         </QueryClientProvider>
       </SignedIn>
       <SignedOut>

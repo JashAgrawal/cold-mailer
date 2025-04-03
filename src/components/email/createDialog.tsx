@@ -92,7 +92,7 @@ const CreateEmailTemplateDialog = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         {children || <Button variant="outline">Create Template</Button>}
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-[90vw] md:max-w-[70vw] lg:max-w-[60vw] overflow-y-auto">

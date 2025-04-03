@@ -76,7 +76,7 @@ const NewReceiverForm = ({ templateId }: { templateId: string }) => {
   if (!selectedTemplate || !selectedTemplate.variable) return null;
 
   return (
-    <Card className="mt-8 mb-8">
+    <Card className="w-full mt-8 mb-8">
       <CardContent className="pt-6">
         <form
           onSubmit={(e) => {

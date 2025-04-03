@@ -12,8 +12,8 @@ const Mailer = ({
   receivers: IReciver[];
 }) => {
   return (
-    <div className="flex flex-col gap-4">
-      <div className="container">
+    <div className="w-full flex flex-col gap-4">
+      <div className="w-full">
         <NewTable reciverData={receivers} templateId={templateId} />
       </div>
       <NewReceiverForm templateId={templateId} />
