@@ -82,26 +82,6 @@ const Navbar = () => {
               >
                 Templates
               </Link>
-              <Link
-                href="/blog"
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname.includes("/blog")
-                    ? "text-primary font-semibold"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Blog
-              </Link>
-              <Link
-                href="/guides"
-                className={`text-sm font-medium transition-colors hover:text-primary ${
-                  pathname.includes("/guides")
-                    ? "text-primary font-semibold"
-                    : "text-muted-foreground"
-                }`}
-              >
-                Guides
-              </Link>
             </nav>
           )}
 
