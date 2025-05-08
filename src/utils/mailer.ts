@@ -44,14 +44,14 @@ export const sendSingleMail = async (reciver: IReciver, content: string, variabl
     try {
       // Extract domain from sender email for Message-ID
       const domain = sender.email.split('@')[1];
-      const messageId = generateMessageId(domain);
+      const messageId = await generateMessageId(domain);
 
       // Create a tracking URL with a more generic parameter name
       const trackingUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/track-email?reciverId=${reciver.id}`;
 
       // Get personalized content
-      const personalizedSubject = getSubjectContent(subject, variables);
-      const personalizedContent = getEmailContent(content, variables);
+      const personalizedSubject = await getSubjectContent(subject, variables);
+      const personalizedContent = await getEmailContent(content, variables);
 
       // Get sender name from email or use a default
       const senderName = sender.email.split('@')[0].replace(/[.]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());

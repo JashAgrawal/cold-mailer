@@ -3,6 +3,8 @@ import { getTemplate, updateTemplate } from '@/db/server-env/templates';
 import { Timestamp } from 'firebase-admin/firestore';
 import { NextRequest } from 'next/server';
 
+export const runtime = 'nodejs';
+
 // Bot detection regex
 const botUserAgents = /googlebot|bingbot|yandex|baidu|mail\.ru|outlook|apple|bot|crawler|spider|robot/i;
 
@@ -36,13 +38,13 @@ export async function GET(req: NextRequest) {
     }
 
     // Update receiver and template data
-    await updateReceiver(reciverId, { 
+    await updateReceiver(reciverId, {
       openedAt: Timestamp.now().toDate(),
-      openedCount: (receiver.openedCount || 0) + 1 
+      openedCount: (receiver.openedCount || 0) + 1
     });
 
-    await updateTemplate(template.id || '', { 
-      openedCount: (template.openedCount || 0) + 1 
+    await updateTemplate(template.id || '', {
+      openedCount: (template.openedCount || 0) + 1
     });
 
     return sendTransparentPixel();

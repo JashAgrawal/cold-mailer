@@ -13,10 +13,10 @@ export function extractVariables(str: string) {
   return matches;
 }
 
-export const getEmailContent = (content: string, variables: string) => {
+export const getEmailContent = async (content: string, variables: string) => {
   let emailContent = content;
   if (variables === "") {
-    return sanitizeEmailContent(emailContent);
+    return await sanitizeEmailContent(emailContent);
   }
 
   try {
@@ -35,19 +35,19 @@ export const getEmailContent = (content: string, variables: string) => {
     });
 
     // Apply spam prevention measures to the content
-    return sanitizeEmailContent(emailContent);
+    return await sanitizeEmailContent(emailContent);
   } catch (error) {
     console.error("Error processing email variables:", error);
     // Return the original content if there's an error
-    return sanitizeEmailContent(content);
+    return await sanitizeEmailContent(content);
   }
 };
 
-export const getSubjectContent = (subject: string, variables: string) => {
+export const getSubjectContent = async (subject: string, variables: string) => {
   let subjectContent = subject;
   if (variables === "") {
     // Check for spam trigger words in the subject
-    const spamCheck = checkSpamTriggerWords(subjectContent);
+    const spamCheck = await checkSpamTriggerWords(subjectContent);
     if (spamCheck.hasSpamWords) {
       console.warn(`Subject contains potential spam trigger words: ${spamCheck.words.join(', ')}`);
     }
@@ -63,7 +63,7 @@ export const getSubjectContent = (subject: string, variables: string) => {
     });
 
     // Check for spam trigger words in the personalized subject
-    const spamCheck = checkSpamTriggerWords(subjectContent);
+    const spamCheck = await checkSpamTriggerWords(subjectContent);
     if (spamCheck.hasSpamWords) {
       console.warn(`Personalized subject contains potential spam trigger words: ${spamCheck.words.join(', ')}`);
     }
