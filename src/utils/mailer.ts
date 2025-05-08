@@ -7,13 +7,27 @@ import { updateTemplate } from "@/db/server-env/templates";
 import { ISender } from "@/components/sender/type";
 import { generateMessageId } from "./emailUtils";
 
+/**
+ * Generates a random delay between min and max seconds
+ * This helps make the sending pattern less predictable to avoid spam filters
+ *
+ * @param min Minimum delay in seconds
+ * @param max Maximum delay in seconds
+ * @returns Delay in milliseconds
+ */
+const getRandomDelay = (min: number, max: number): number => {
+  return Math.floor(Math.random() * (max - min + 1) + min) * 1000;
+};
+
 export const sendMails = async (recivers: IReciver[], content: string, subject: string, templateId: string, sender: ISender) => {
   try {
-    // Use a delay between emails to avoid sending too many at once (helps with deliverability)
+    // Use a randomized delay between emails to avoid sending too many at once (helps with deliverability)
     for (const reciver of recivers) {
       await sendSingleMail(reciver, content, reciver.variables, subject, sender);
-      // Add a small delay between emails to avoid triggering spam filters
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Add a randomized delay between 1-3 seconds between emails to avoid triggering spam filters
+      const randomDelay = getRandomDelay(1, 3);
+      console.log(`Waiting ${randomDelay/1000} seconds before sending next email...`);
+      await new Promise(resolve => setTimeout(resolve, randomDelay));
     }
 
     const newRecivers = await getReceiversByTemplate(templateId);
