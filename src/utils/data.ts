@@ -1,24 +1,4 @@
-// export const subject = `Empowering Local Stores - Let's Build Dukaan Pe Together`
-// export const emailTemplate = `Hi [Investor Name],
-
-// I hope you're well. I'm Jash Agrawal, the founder of Dukaan Pe—a platform born out of genuine passion to transform how local businesses connect with their communities. I've seen firsthand the struggles local stores face in reaching their customers, and I believe Dukaan Pe can change that narrative.
-
-// Here's what makes us different:
-
-// • A Purpose-Driven Vision: We're not just another marketplace. Dukaan Pe is designed to empower local entrepreneurs, preserving the charm of neighborhood shops while boosting their digital presence.
-// • Real Market Opportunity: With consumers increasingly valuing authentic, hyperlocal experiences, our platform is perfectly positioned to capture this growing demand.
-// • A Genuine Connection: We focus on crafting a simple, distraction-free digital space where every local business can tell its unique story—something I believe resonates deeply with communities.
-
-// I'm incredibly passionate about supporting local commerce and would love to share more about how Dukaan Pe is set to reshape the landscape for neighborhood stores. Could we schedule a call next week to discuss how you can be part of this exciting journey?
-
-// Thank you for considering this opportunity.
-
-// Warm regards,
-
-// Jash Agrawal
-// Founder & CEO, Dukaan Pe
-// +91 7021280686 | agrawaljash99@gmail.com
-// https://jashagrawal.in/linkedin | https://jashagrawal.in`
+import { sanitizeEmailContent, checkSpamTriggerWords } from "./emailUtils";
 
 export function extractVariables(str: string) {
   // Extract variables from text, even if they're inside HTML tags
@@ -32,35 +12,65 @@ export function extractVariables(str: string) {
 
   return matches;
 }
-// export const emailVariables = extractVariables(emailTemplate);
 
 export const getEmailContent = (content: string, variables: string) => {
   let emailContent = content;
   if (variables === "") {
-    return emailContent;
+    return sanitizeEmailContent(emailContent);
   }
 
-  const variablesObj: Record<string, string> = JSON.parse(variables);
+  try {
+    const variablesObj: Record<string, string> = JSON.parse(variables);
 
-  Object.entries(variablesObj).forEach(([key, value]) => {
-    emailContent = emailContent.replaceAll(`[${key}]`, value);
-  });
+    Object.entries(variablesObj).forEach(([key, value]) => {
+      // Safely replace variables with proper escaping to prevent HTML injection
+      const safeValue = value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
 
-  // Since content is already HTML from the rich text editor, don't wrap in <p> tags
-  return emailContent;
+      emailContent = emailContent.replaceAll(`[${key}]`, safeValue);
+    });
+
+    // Apply spam prevention measures to the content
+    return sanitizeEmailContent(emailContent);
+  } catch (error) {
+    console.error("Error processing email variables:", error);
+    // Return the original content if there's an error
+    return sanitizeEmailContent(content);
+  }
 };
 
 export const getSubjectContent = (subject: string, variables: string) => {
   let subjectContent = subject;
   if (variables === "") {
+    // Check for spam trigger words in the subject
+    const spamCheck = checkSpamTriggerWords(subjectContent);
+    if (spamCheck.hasSpamWords) {
+      console.warn(`Subject contains potential spam trigger words: ${spamCheck.words.join(', ')}`);
+    }
     return subjectContent;
   }
 
-  const variablesObj: Record<string, string> = JSON.parse(variables);
+  try {
+    const variablesObj: Record<string, string> = JSON.parse(variables);
 
-  Object.entries(variablesObj).forEach(([key, value]) => {
-    subjectContent = subjectContent.replace(`[${key}]`, value);
-  });
+    Object.entries(variablesObj).forEach(([key, value]) => {
+      // Use a safe replacement method
+      subjectContent = subjectContent.replace(`[${key}]`, value);
+    });
 
-  return subjectContent;
+    // Check for spam trigger words in the personalized subject
+    const spamCheck = checkSpamTriggerWords(subjectContent);
+    if (spamCheck.hasSpamWords) {
+      console.warn(`Personalized subject contains potential spam trigger words: ${spamCheck.words.join(', ')}`);
+    }
+
+    return subjectContent;
+  } catch (error) {
+    console.error("Error processing subject variables:", error);
+    return subject;
+  }
 };
