@@ -54,7 +54,7 @@ export const sendSingleMail = async (reciver: IReciver, content: string, variabl
       const personalizedContent = await getEmailContent(content, variables);
 
       // Get sender name from email or use a default
-      const senderName = sender.email.split('@')[0].replace(/[.]/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      const senderName = sender.name;
 
       // Create mail options with anti-spam headers
       const mailOptions = {
@@ -86,7 +86,7 @@ export const sendSingleMail = async (reciver: IReciver, content: string, variabl
   <div style="margin-top: 20px; font-size: 12px; color: #666; border-top: 1px solid #eee; padding-top: 10px;">
     <p>If you no longer wish to receive these emails, you can <a href="mailto:unsubscribe@${domain}?subject=Unsubscribe">unsubscribe here</a>.</p>
   </div>
-  <img src="${trackingUrl}" alt="" width="1" height="1" style="display:none;" />
+  <img src="${trackingUrl}" alt="" width="4" height="2" style="display:block;opcaity:0;" />
 </body>
 </html>`,
       };
